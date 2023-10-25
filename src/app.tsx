@@ -7,6 +7,7 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 // @ts-ignore
 import { getLoginUserUsingGET } from '@/services/ai-bi/userController';
 import { history, Link } from '@umijs/max';
+import { message } from 'antd';
 import defaultSettings from '../config/defaultSettings';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { errorConfig } from './requestErrorConfig';
@@ -21,13 +22,13 @@ export async function getInitialState(): Promise<{
   currentUser?: API.LoginUserVO;
   loading?: boolean;
 }> {
+  // 获取登录信息
   const fetchUserInfo = async () => {
     try {
-      const msg = await getLoginUserUsingGET({
-        skipErrorHandler: true,
-      });
-      return msg.data;
+      const res = await getLoginUserUsingGET({ skipErrorHandler: true });
+      return res.data;
     } catch (error) {
+      message.warning('登陆超时，请重新登录！');
       history.push(loginPath);
     }
     return undefined;

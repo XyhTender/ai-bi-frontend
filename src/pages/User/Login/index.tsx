@@ -35,7 +35,7 @@ const Login: React.FC = () => {
         // @ts-ignore
         setInitialState((s) => ({
           ...s,
-          currentUser: userInfo,
+          currentUser: userInfo.data,
         }));
       });
     }
