@@ -1,6 +1,6 @@
 import { listMyChartByPageUsingPOST } from '@/services/ai-bi/chartController';
 import { useModel } from '@@/exports';
-import { Avatar, Card, List, message } from 'antd';
+import { Avatar, Button, Card, List, message, Modal } from 'antd';
 import Search from 'antd/es/input/Search';
 import ReactECharts from 'echarts-for-react';
 import React, { useEffect, useState } from 'react';
@@ -30,7 +30,25 @@ const MyChart: React.FC = () => {
   //获取总页数
   const [total, setTotal] = useState<number>();
 
+  //加载
   const [loading, setLoading] = useState<boolean>();
+
+  //结论弹窗
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const [selectedChart, setSelectedChart] = useState<API.Chart | null>(null);
+  // Function to set the selected chart and open the Modal
+  const showChartConclusion = (chart: API.Chart) => {
+    setSelectedChart(chart);
+    setIsModalOpen(true);
+  };
 
   const loadData = async () => {
     setLoading(true);
@@ -115,6 +133,13 @@ const MyChart: React.FC = () => {
               <div style={{ marginBottom: 16 }} />
               {/*item.genChart为空则展示一个空对象*/}
               <ReactECharts option={JSON.parse(item.genChart ?? '{}')} />
+
+              <Button type="primary" onClick={() => showChartConclusion(item)}>
+                结论
+              </Button>
+              <Modal title="图表结论" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                {selectedChart && <p>{selectedChart.getResult}</p>}
+              </Modal>
             </Card>
           </List.Item>
         )}
