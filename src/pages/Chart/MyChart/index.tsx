@@ -65,12 +65,12 @@ const MyChart: React.FC = () => {
             chartOption.title = undefined;
             data.genChart = JSON.stringify(chartOption);
           });
+        } else {
+          message.error('获取图表失败！');
         }
-      } else {
-        message.error('获取图表失败！');
       }
     } catch (e: any) {
-      message.error('获取我的图表失败！' + e.message);
+      message.error('获取图表失败！' + e.message);
     }
     setLoading(false);
   };

@@ -40,6 +40,8 @@ export async function getInitialState(): Promise<{
     return {
       currentUser,
     };
+  } else {
+    message.warning('请登录！');
   }
   return {};
 }
@@ -66,6 +68,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
+        message.warning('会话失效，请重新登录！');
         history.push(loginPath);
       }
     },

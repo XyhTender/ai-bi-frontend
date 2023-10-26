@@ -38,6 +38,8 @@ const Login: React.FC = () => {
           currentUser: userInfo.data,
         }));
       });
+    } else {
+      message.warning('登陆失效，请重新登录！');
     }
   };
   const handleSubmit = async (values: API.UserLoginRequest) => {
